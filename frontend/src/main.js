@@ -33,6 +33,14 @@ const createTutorCard = (tutor, index) => `
 const createTestimonial = (item) => `
   <article class="testimonial"><div class="testimonial__quote">“</div><blockquote>${item.quote}</blockquote><div class="testimonial__person"><span>${item.name}</span><small>${item.role}</small></div><strong>${item.result}</strong></article>`
 
+const showContentError = () => {
+  const status = $('#content-status')
+  if (!status) return
+  status.hidden = false
+  status.innerHTML = '<strong>Konten belum tersedia.</strong><span>Coba muat ulang untuk menghubungkan kembali.</span><button type="button" id="content-retry">Coba lagi</button>'
+  $('#content-retry')?.addEventListener('click', () => window.location.reload())
+}
+
 const renderContent = ({ programs, testimonials, tutors, stats }) => {
   const rail = $('#program-rail')
   const select = $('#program-select')
@@ -227,27 +235,30 @@ const init = async () => {
     setupTrialForm()
     createScene()
     try {
-    const content = await loadContent()
-    renderContent(content)
-    await document.fonts.ready
-    setupMotion()
-    ScrollTrigger.refresh()
-    window.setTimeout(() => ScrollTrigger.refresh(), 250)
-    resizeHandler = () => {
-      window.clearTimeout(resizeHandler.timer)
-      resizeHandler.timer = window.setTimeout(() => {
-        setupMotion()
-        ScrollTrigger.refresh()
-      }, 180)
+      const content = await loadContent()
+      renderContent(content)
+      await document.fonts.ready
+      setupMotion()
+      ScrollTrigger.refresh()
+      window.setTimeout(() => ScrollTrigger.refresh(), 250)
+      resizeHandler = () => {
+        window.clearTimeout(resizeHandler.timer)
+        resizeHandler.timer = window.setTimeout(() => {
+          setupMotion()
+          ScrollTrigger.refresh()
+        }, 180)
+      }
+      addEventListener('resize', resizeHandler)
+    } catch (error) {
+      console.error(error)
+      document.body.classList.add('api-error')
+      showContentError()
     }
-    addEventListener('resize', resizeHandler)
-  } catch (error) {
-    console.error(error)
-    document.body.classList.add('api-error')
-  }
     window.__ruangTumbuhCleanup = cleanup
   })()
   return initPromise
 }
 
-init()
+const boot = () => init()
+if (document.readyState === 'complete') boot()
+else addEventListener('load', boot, { once: true })

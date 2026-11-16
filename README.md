@@ -6,13 +6,18 @@ Demo website premium untuk bimbel dengan backend Go dan frontend Vite.
 
 ```text
 .
-├── data.go
-├── handlers.go
-├── main.go
-├── go.mod
+├── Dockerfile
+├── .dockerignore
+├── backend
+│   ├── data.go
+│   ├── go.mod
+│   ├── go.sum
+│   ├── handlers.go
+│   └── main.go
 └── frontend
     ├── index.html
     ├── package.json
+    ├── package-lock.json
     ├── vite.config.js
     └── src
         ├── api.js
@@ -21,51 +26,54 @@ Demo website premium untuk bimbel dengan backend Go dan frontend Vite.
         └── styles.css
 ```
 
-## Menjalankan mode development
+## Run locally
 
-Terminal 1:
+Build frontend terlebih dahulu:
 
 ```powershell
 cd frontend
 npm install
-npm run dev
-```
-
-Terminal 2:
-
-```powershell
-go run .
-```
-
-Buka `http://localhost:5173`. Vite meneruskan `/api` ke Go di port 8080.
-
-## Build untuk dilayani Go
-
-Jika terminal sedang berada di folder root `C:\demo_inggris`, gunakan:
-
-```powershell
-npm --prefix .\frontend install
-npm --prefix .\frontend run build
-go run .
-```
-
-Jika terminal sedang berada di folder `C:\demo_inggris\frontend`, gunakan tanpa prefix. Jangan gunakan `npm --prefix .\frontend` dari folder ini karena itu akan membuat instalasi nested `frontend\frontend`:
-
-```powershell
-npm install
 npm run build
-cd ..
+```
+
+Jalankan backend:
+
+```powershell
+cd ../backend
 go run .
 ```
 
-Jangan menjalankan `npm --prefix frontend run build` dari dalam folder `frontend`, karena npm akan mencari `C:\demo_inggris\frontend\frontend\package.json`.
+Buka `http://localhost:8080`. Backend akan mencari `frontend/dist` dari parent directory dan melayani frontend sekaligus API.
 
-Buka `http://localhost:8080`. Go akan melayani `frontend/dist` sekaligus endpoint JSON.
+Jika port 8080 sedang digunakan, jalankan dengan port lain:
 
-## Endpoint
+```powershell
+$env:PORT="8081"
+go run .
+```
+
+Untuk development frontend dengan Vite, jalankan `npm run dev` dari folder `frontend`; proxy `/api` mengarah ke backend di port 8080.
+
+## API
 
 - `GET /api/programs`
 - `GET /api/testimonials`
 - `GET /api/tutors`
 - `GET /api/stats`
 - `POST /api/trial` dengan body `{ "name": "...", "phone": "...", "grade": "...", "program": "..." }`
+- `GET /healthz` untuk health check
+
+## Deploy to Render
+
+1. Push repository ke GitHub.
+2. Di Render pilih **New Web Service**.
+3. Pilih repository ini.
+4. Runtime: **Docker**.
+5. Root Directory: kosongkan.
+6. Dockerfile Path: `./Dockerfile`.
+7. Instance: **Free**.
+8. Region: **Singapore**.
+9. Environment variables: tidak diperlukan.
+10. Deploy service.
+
+Dockerfile di root akan membangun frontend Vite, mengompilasi backend Go, lalu menjalankan satu container yang melayani halaman static dan API. Render akan memberikan nilai `PORT`; container juga memiliki default `10000`.

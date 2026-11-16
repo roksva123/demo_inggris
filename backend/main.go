@@ -11,6 +11,7 @@ import (
 func main() {
 	mux := http.NewServeMux()
 	registerAPI(mux)
+	mux.HandleFunc("/healthz", healthz)
 
 	staticDir := os.Getenv("STATIC_DIR")
 	if staticDir == "" {
@@ -73,14 +74,25 @@ func findStaticDir() string {
 	return ""
 }
 
+func healthz(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		writeJSON(w, http.StatusMethodNotAllowed, map[string]string{"error": "method not allowed"})
+		return
+	}
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	w.WriteHeader(http.StatusOK)
+	_, _ = w.Write([]byte("ok"))
+}
+
 func spaHandler(staticDir string) http.Handler {
 	fileServer := http.FileServer(http.Dir(staticDir))
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// API yang tidak terdaftar: balas JSON 404, jangan kirim index.html
-		if strings.HasPrefix(r.URL.Path, "/api/") {
-			w.Header().Set("Content-Type", "application/json")
+		// API yang tidak terdaftar: balas JSON 404, jangan kirim index.html.
+		// Registered API routes have already been installed before this handler.
+		if r.URL.Path == "/api" || strings.HasPrefix(r.URL.Path, "/api/") {
+			w.Header().Set("Content-Type", "application/json; charset=utf-8")
 			w.WriteHeader(http.StatusNotFound)
-			w.Write([]byte(`{"error":"not found"}`))
+			_, _ = w.Write([]byte(`{"error":"not found"}`))
 			return
 		}
 
@@ -90,8 +102,10 @@ func spaHandler(staticDir string) http.Handler {
 		}
 
 		if r.URL.Path != "/" {
-			p := filepath.Join(staticDir, filepath.Clean("/"+r.URL.Path))
+			relativePath := filepath.Clean(strings.TrimPrefix(r.URL.Path, "/"))
+			p := filepath.Join(staticDir, relativePath)
 			if info, err := os.Stat(p); err == nil && !info.IsDir() {
+				setStaticContentType(w, p)
 				fileServer.ServeHTTP(w, r)
 				return
 			}
@@ -99,8 +113,21 @@ func spaHandler(staticDir string) http.Handler {
 
 		// index.html jangan di-cache supaya tidak nyangkut build lama
 		w.Header().Set("Cache-Control", "no-cache")
+		setStaticContentType(w, filepath.Join(staticDir, "index.html"))
 		http.ServeFile(w, r, filepath.Join(staticDir, "index.html"))
 	})
+}
+
+func setStaticContentType(w http.ResponseWriter, path string) {
+	contentTypes := map[string]string{
+		".js":    "text/javascript; charset=utf-8",
+		".css":   "text/css; charset=utf-8",
+		".woff2": "font/woff2",
+		".svg":   "image/svg+xml",
+	}
+	if contentType, ok := contentTypes[strings.ToLower(filepath.Ext(path))]; ok {
+		w.Header().Set("Content-Type", contentType)
+	}
 }
 
 func logging(next http.Handler) http.Handler {

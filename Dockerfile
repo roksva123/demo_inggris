@@ -9,14 +9,14 @@ COPY frontend/ ./
 RUN npm run build
 
 # Build the Go backend.
-FROM golang:1.22-alpine AS backend-build
+FROM golang:1.23-alpine AS backend-build
 WORKDIR /app/backend
 
-COPY backend/go.mod ./
+COPY backend/go.mod backend/go.sum ./
 RUN go mod download
 
 COPY backend/ ./
-RUN CGO_ENABLED=0 GOOS=linux go build -trimpath -ldflags="-s -w" -o /out/app .
+RUN CGO_ENABLED=0 GOOS=linux go build -trimpath -ldflags="-s -w" -o /out/server .
 
 # Runtime image containing the backend and the built frontend.
 FROM alpine:3.20
@@ -24,11 +24,12 @@ WORKDIR /app
 
 RUN addgroup -S app && adduser -S -G app app
 
-COPY --from=frontend-build /app/frontend/dist ./frontend/dist
-COPY --from=backend-build /out/app ./backend/app
+COPY --from=backend-build /out/server ./server
+COPY --from=frontend-build /app/frontend/dist ./dist
 
+ENV STATIC_DIR=/app/dist
 ENV PORT=10000
 EXPOSE 10000
 USER app
 
-CMD ["./backend/app"]
+CMD ["./server"]
