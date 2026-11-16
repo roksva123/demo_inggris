@@ -1,0 +1,20 @@
+# Git and local metadata
+.git
+.gitignore
+
+# Frontend dependencies and local build output
+frontend/node_modules
+frontend/dist
+
+# Accidental nested installs and local environment files
+frontend/frontend
+backend/bin
+.env
+.env.*
+
+# Logs and OS/editor files
+*.log
+.vscode
+.idea
+.DS_Store
+Thumbs.db
