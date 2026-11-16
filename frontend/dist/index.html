@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#F4EFE6" />
+    <meta name="description" content="Bimbel yang bikin belajar terasa hidup." />
+    <title>Ruang Tumbuh — Belajar yang bikin nagih</title>
+    <script type="module" crossorigin src="/assets/index-D08MC0Wi.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-Qe7RoVgB.css">
+  </head>
+  <body>
+    <div id="preloader" class="preloader" aria-hidden="true">
+      <div class="preloader__top"><span>RUANG TUMBUH</span><span>EST. 2016</span></div>
+      <div class="preloader__counter"><span id="loader-count">0</span><span>%</span></div>
+      <div class="preloader__line"><span id="loader-line"></span></div>
+      <p class="preloader__note">Menyiapkan ruang belajar...</p>
+    </div>
+    <div class="noise" aria-hidden="true"></div>
+    <div class="cursor" id="cursor" aria-hidden="true"><span></span></div>
+    <canvas id="scene-canvas" aria-hidden="true"></canvas>
+    <main>
+      <header class="site-header">
+        <a class="wordmark" href="#top" data-cursor="Lihat"><span>R.</span> Tumbuh</a>
+        <nav class="site-nav" aria-label="Navigasi utama">
+          <a href="#why">Kenapa kami</a>
+          <a href="#programs">Program</a>
+          <a href="#trial" class="nav-cta" data-cursor="Mulai">Coba gratis <span>↗</span></a>
+        </nav>
+        <button class="menu-toggle" aria-label="Buka navigasi"><span></span><span></span></button>
+      </header>
+
+      <section class="hero" id="top">
+        <div class="hero__meta section-label"><span>(00)</span><span>RUANG BELAJAR</span></div>
+        <div class="hero__copy">
+          <p class="eyebrow">Bimbel untuk rasa ingin tahu yang besar</p>
+          <h1>Belajar yang<br /><em>bikin nagih.</em></h1>
+          <p class="hero__subline">Bukan sekadar mengejar nilai. Kami menemani setiap anak menemukan cara belajar yang paling cocok untuk mereka.</p>
+          <a href="#trial" class="button button--primary magnetic" data-cursor="Mulai"><span>Coba kelas gratis</span><i>↗</i></a>
+        </div>
+        <div class="hero__art-note"><span class="scribble">✳</span><span>Rasa ingin tahu<br />adalah superpower.</span></div>
+        <div class="sticker sticker--hero" aria-hidden="true"><span>GRATIS</span><strong>TRIAL!</strong><small>untuk kamu</small></div>
+        <div class="hero__scroll"><span>Scroll untuk berkenalan</span><i>↓</i></div>
+      </section>
+
+      <section class="marquee" aria-label="Mata pelajaran">
+        <div class="marquee__track"><span>MATEMATIKA</span><b>✳</b><span>FISIKA</span><b>✳</b><span>ENGLISH</span><b>✳</b><span>CALISTUNG</span><b>✳</b><span>UTBK</span><b>✳</b><span>MATEMATIKA</span><b>✳</b><span>FISIKA</span><b>✳</b><span>ENGLISH</span><b>✳</b></div>
+      </section>
+
+      <section class="why section-cream" id="why">
+        <div class="section-heading">
+          <div class="why__label-column"><div class="section-label"><span>(01)</span><span>KENAPA KAMI</span></div><p class="why__intro-copy">Setiap anak punya ritme sendiri. Tugas kami adalah membuat mereka nyaman untuk mencoba, gagal, lalu tumbuh lebih jauh.</p></div>
+          <h2>Ruang kecil.<br /><em>Dampak besar.</em></h2>
+        </div>
+        <div class="reasons">
+          <article class="reason reason--one"><div class="reason__number">01</div><div><h3>Kelas kecil,<br /><em>fokus maksimal.</em></h3><p>Maksimal 8 siswa per kelas. Tutor bisa benar-benar melihat proses, bukan cuma hasil.</p></div><span class="reason__mark">↗</span></article>
+          <article class="reason reason--two"><div class="reason__number">02</div><div><h3>Tutor yang<br /><em>mendengar.</em></h3><p>Materi penting. Tapi tahu kapan harus menjelaskan ulang jauh lebih penting.</p></div><span class="reason__mark">↗</span></article>
+          <article class="reason reason--three"><div class="reason__number">03</div><div><h3>Progress yang<br /><em>terasa.</em></h3><p>Update singkat setiap bulan agar orang tua dan anak selalu satu arah.</p></div><span class="reason__mark">↗</span></article>
+        </div>
+      </section>
+
+      <section class="programs" id="programs">
+        <div class="programs__header section-cream"><div class="section-label"><span>(02)</span><span>PILIH PETUALANGANMU</span></div><h2>Mulai dari<br /><em>yang kamu suka.</em></h2><p>Geser untuk melihat semua program. Trial class selalu gratis.</p></div>
+        <div class="programs__rail" id="program-rail"></div>
+      </section>
+
+      <section class="results section-forest" id="results">
+        <div class="results__head"><div class="section-label section-label--light"><span>(03)</span><span>HASIL YANG TERASA</span></div><h2>Angka boleh bicara.<br /><em>Cerita lebih jujur.</em></h2></div>
+        <div class="stats" id="stats-grid"></div>
+        <div class="testimonial-wrap"><div class="testimonial-top"><span class="mini-label">KATA MEREKA</span><div class="testimonial-controls"><span class="drag-hint">← Drag untuk baca →</span><button id="testimonial-prev" aria-label="Testimoni sebelumnya">←</button><button id="testimonial-next" aria-label="Testimoni berikutnya">→</button></div></div><div class="testimonials" id="testimonial-track" data-cursor="Drag"></div><div class="slider-progress"><span id="slider-progress"></span></div></div>
+      </section>
+
+      <section class="results-marquee" aria-label="Ritme belajar"><div class="results-marquee__track"><span>BELAJAR BARENG</span><b>✳</b><span>BERANI MENCOBA</span><b>✳</b><span>TERUS TUMBUH</span><b>✳</b><span>BELAJAR BARENG</span><b>✳</b><span>BERANI MENCOBA</span><b>✳</b></div></section>
+
+      <section class="tutors section-cream" id="tutors">
+        <div class="tutors__intro"><div class="section-label"><span>(04)</span><span>KENALAN DENGAN TUTOR</span></div><h2>Orang baik<br /><em>di balik papan tulis.</em></h2><p>Karena chemistry yang tepat bisa mengubah “aku nggak bisa” jadi “coba lagi”.</p></div>
+        <div class="tutor-grid" id="tutor-grid"></div>
+      </section>
+
+      <section class="trial section-tomato" id="trial">
+        <div class="trial__stamp">SIAP<br /><em>COBA?</em></div>
+        <div class="section-label section-label--light"><span>(05)</span><span>LANGKAH PERTAMA</span></div>
+        <div class="trial__layout"><div class="trial__copy"><h2>Satu kelas.<br /><em>Banyak kemungkinan.</em></h2><p>Isi detail singkat. Tim kami akan menghubungi untuk mencarikan jadwal trial class yang paling pas.</p></div><form class="trial-form" id="trial-form" novalidate><label><span>Nama kamu / orang tua</span><input name="name" type="text" autocomplete="name" placeholder="Tulis nama di sini" required /></label><label><span>Nomor WhatsApp</span><input name="phone" type="tel" autocomplete="tel" placeholder="08xx xxxx xxxx" required /></label><div class="form-row"><label><span>Kelas</span><select name="grade" required><option value="">Pilih kelas</option><option>SD</option><option>SMP</option><option>SMA</option><option>Gap year</option></select></label><label><span>Program</span><select name="program" id="program-select" required><option value="">Pilih program</option></select></label></div><p class="form-error" id="form-error" role="alert"></p><button class="button button--dark magnetic" type="submit"><span>Kirim & jadwalkan trial</span><i>↗</i></button><p class="form-note">Tanpa biaya. Tanpa komitmen. Cuma ngobrol sebentar.</p></form><div class="trial-success" id="trial-success" hidden><div class="success-shapes"><i></i><i></i><i></i></div><span class="section-label">TERKIRIM ✓</span><h3>Sampai ketemu<br /><em>di kelas!</em></h3><p>Tim kami akan segera menghubungi kamu.</p></div></div>
+      </section>
+
+      <footer class="footer section-forest"><div class="footer__top"><a class="wordmark wordmark--light" href="#top"><span>R.</span> Tumbuh</a><div class="footer__contact"><span>Ngobrol yuk</span><a href="mailto:halo@ruangtumbuh.id">halo@ruangtumbuh.id ↗</a><a href="tel:+6281212345678">+62 812 1234 5678</a></div><div class="footer__social"><span>Temui kami</span><a href="#top">Instagram ↗</a><a href="#top">TikTok ↗</a></div></div><div class="footer__word">TUMBUH<span>.</span></div><div class="footer__bottom"><span>© 2024 Ruang Tumbuh</span><span>Jakarta · Bandung · Online</span><a href="#top">Kembali ke atas ↑</a></div></footer>
+    </main>
+  </body>
+</html>
