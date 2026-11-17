@@ -63,7 +63,13 @@ Untuk development frontend dengan Vite, jalankan `npm run dev` dari folder `fron
 - `POST /api/trial` dengan body `{ "name": "...", "phone": "...", "grade": "...", "program": "..." }`
 - `GET /healthz` untuk health check
 
-## Deploy to Render
+## Deploy ke Vercel + Render
+
+Vercel cocok untuk frontend Vite, tetapi tidak menjalankan container Docker/HTTP server Go seperti `Dockerfile` di root. Karena itu deploy dibuat dua bagian:
+
+### 1. Deploy backend Go ke Render
+
+Ikuti langkah Render di bawah. Setelah berhasil, catat URL backend, misalnya `https://demo-inggris-api.onrender.com`.
 
 1. Push repository ke GitHub.
 2. Di Render pilih **New Web Service**.
@@ -76,4 +82,22 @@ Untuk development frontend dengan Vite, jalankan `npm run dev` dari folder `fron
 9. Environment variables: tidak diperlukan.
 10. Deploy service.
 
-Dockerfile di root akan membangun frontend Vite, mengompilasi backend Go, lalu menjalankan satu container yang melayani halaman static dan API. Render akan memberikan nilai `PORT`; container juga memiliki default `10000`.
+Dockerfile di root membangun frontend Vite, mengompilasi backend Go, lalu menjalankan satu container yang melayani halaman static dan API. Render akan memberikan nilai `PORT`; container juga memiliki default `10000`.
+
+### 2. Deploy frontend ke Vercel
+
+1. Buka [vercel.com](https://vercel.com), login, lalu pilih **Add New → Project**.
+2. Import repository GitHub ini.
+3. Pada **Root Directory**, pilih `frontend`.
+4. Framework Preset: **Vite**.
+5. Build Command: `npm run build`.
+6. Output Directory: `dist`.
+7. Tambahkan Environment Variable:
+   - Name: `VITE_API_URL`
+   - Value: URL backend Render, contoh `https://demo-inggris-api.onrender.com`
+   - Environment: Production (boleh centang Preview juga)
+8. Klik **Deploy**.
+
+Kode frontend menggunakan `VITE_API_URL` untuk memanggil API backend. Jika variabel ini kosong, frontend memakai URL relatif `/api`, yang tetap cocok untuk deployment satu server seperti Docker/Render.
+
+> Jika mengubah `VITE_API_URL` setelah deploy, lakukan **Redeploy** karena nilai `VITE_*` dimasukkan saat proses build frontend.
